@@ -1,7 +1,9 @@
 {
-  "name": "typescript-nodejs-template",
+  "name": "wireit-monorepo-sandbox",
+  "workspaces": [
+    "packages/*"
+  ],
   "private": true,
-  "main": "index.js",
   "license": "MIT",
   "type": "module",
   "devDependencies": {
