@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: nodenv/actions/node-version@main
+        id: nodenv
+      - name: Use Node.js ${{ steps.nodenv.outputs.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ steps.nodenv.outputs.node-version }}
+
+      - name: cache node_modules
+        id: node_modules_cache_id
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+          key: node-v${{ matrix.node-version }}-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
+
+      - name: yarn install
+        run: |
+          yarn install --frozen-lockfile --verbose
+        env:
+          CI: true
+
+      - name: Run test
+        run: |
+          yarn test
+        env:
+          CI: true

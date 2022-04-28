@@ -1,0 +1,11 @@
+{
+  "extends": "@tsconfig/node16-strictest-esm/tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "moduleResolution": "node"
+  },
+  "include": ["./src/**/*.ts"],
+  "exclude": ["./src/**/*.spec.ts"]
+}
