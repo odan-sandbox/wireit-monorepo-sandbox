@@ -18,15 +18,40 @@
     "prettier": "^2.6.2",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.3",
-    "vitest": "^0.9.4"
+    "vitest": "^0.9.4",
+    "wireit": "^0.2.1"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "test": "run-p test:*",
-    "test:build": "yarn build --noEmit",
-    "test:vitest": "yarn vitest run",
-    "test:lint": "eslint --ext .js,.ts --ignore-path .gitignore .",
-    "test:format": "prettier --ignore-path .gitignore . --check",
-    "format": "prettier --ignore-path .gitignore . --write"
+    "lint:frontend": "wireit",
+    "lint:backend": "wireit",
+    "build": "wireit",
+    "build:frontend": "wireit",
+    "build:backend": "wireit"
+  },
+  "wireit": {
+    "lint:frontend": {
+      "command": "yarn workspace frontend lint"
+    },
+    "lint:backend": {
+      "command": "yarn workspace backend lint"
+    },
+    "build:frontend": {
+      "command": "yarn workspace frontend build",
+      "dependencies": [
+        "lint:frontend"
+      ]
+    },
+    "build:backend": {
+      "command": "yarn workspace backend build",
+      "dependencies": [
+        "lint:backend"
+      ]
+    },
+    "build": {
+      "dependencies": [
+        "build:frontend",
+        "build:backend"
+      ]
+    }
   }
 }
